@@ -107,41 +107,91 @@ class DocumentGenerator:
             raise Exception(f"模板文件验证失败: {e}")
     
     def read_data(self, data_path):
-        """读取Excel数据"""
+        """读取Excel数据，支持水平布局和垂直布局"""
         if not os.path.exists(data_path):
             raise FileNotFoundError(f"数据文件不存在: {data_path}")
-        
+
         try:
-            # 转换为字符串路径
             data_path_str = str(data_path)
-            
-            # 支持 .xlsx 和 .xls 格式
-            if data_path_str.endswith('.xls'):
-                df = pd.read_excel(
-                    data_path_str,
-                    sheet_name=self.config['sheet_name'],
-                    skiprows=self.config['skip_rows']
-                )
-            else:
-                df = pd.read_excel(
-                    data_path_str,
-                    sheet_name=self.config['sheet_name'],
-                    skiprows=self.config['skip_rows'],
-                    engine='openpyxl'
-                )
-            
-            # 清理数据：去除空行，处理NaN值
-            df = df.dropna(how='all')  # 删除全空行
-            df = df.fillna('')  # NaN转为空字符串
-            
-            # 清理列名（去除空格）
-            df.columns = [str(col).strip() for col in df.columns]
-            
-            logger.info(f"成功读取数据文件: {len(df)} 条记录")
-            return df
-            
+            xl_file = pd.ExcelFile(data_path_str)
+            sheet_names = xl_file.sheet_names
+
+            # 检测布局模式：如果只有一个Sheet且包含多列，则为水平布局
+            # 否则（多Sheet或两列格式）视为垂直布局
+            if len(sheet_names) == 1:
+                first_sheet = pd.read_excel(data_path_str, sheet_name=0, nrows=5)
+                if len(first_sheet.columns) > 2:
+                    # 水平布局：每行一个案件
+                    return self._read_horizontal_layout(data_path_str)
+
+            # 垂直布局：每个Sheet一个案件
+            return self._read_vertical_layout(data_path_str, sheet_names)
+
         except Exception as e:
             raise Exception(f"读取数据文件失败: {e}")
+
+    def _read_horizontal_layout(self, data_path):
+        """读取水平布局：单Sheet，每行一个案件"""
+        if data_path.endswith('.xls'):
+            df = pd.read_excel(
+                data_path,
+                sheet_name=self.config['sheet_name'],
+                skiprows=self.config['skip_rows']
+            )
+        else:
+            df = pd.read_excel(
+                data_path,
+                sheet_name=self.config['sheet_name'],
+                skiprows=self.config['skip_rows'],
+                engine='openpyxl'
+            )
+
+        df = df.dropna(how='all')
+        df = df.fillna('')
+        df.columns = [str(col).strip() for col in df.columns]
+
+        logger.info(f"水平布局：成功读取 {len(df)} 条记录")
+        return df
+
+    def _read_vertical_layout(self, data_path, sheet_names):
+        """读取垂直布局：每个Sheet一个案件，两列格式（字段名|值）"""
+        records = []
+
+        for sheet_name in sheet_names:
+            # 跳过配置中指定要跳过的工作表
+            if sheet_name in self.config.get('skip_sheets', []):
+                continue
+
+            try:
+                df = pd.read_excel(
+                    data_path,
+                    sheet_name=sheet_name,
+                    header=None,
+                    engine='openpyxl'
+                )
+
+                # 转换为字典：第一列为字段名，第二列为值
+                record = {}
+                for _, row in df.iterrows():
+                    if len(row) >= 2 and pd.notna(row[0]):
+                        field_name = str(row[0]).strip()
+                        field_value = str(row[1]).strip() if pd.notna(row[1]) else ''
+                        record[field_name] = field_value
+
+                if record:
+                    records.append(record)
+                    logger.debug(f"读取Sheet '{sheet_name}': {len(record)} 个字段")
+
+            except Exception as e:
+                logger.warning(f"读取Sheet '{sheet_name}' 失败: {e}")
+
+        if not records:
+            raise Exception("未找到有效数据，请检查Excel文件格式")
+
+        # 转换为DataFrame以保持兼容性
+        result_df = pd.DataFrame(records)
+        logger.info(f"垂直布局：成功读取 {len(records)} 个案件（来自 {len(sheet_names)} 个Sheet）")
+        return result_df
     
     def generate_filename(self, row_data):
         """根据配置生成文件名"""
