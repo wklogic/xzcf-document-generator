@@ -1,6 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""创建垂直布局的示例数据文件（每个案件一个Sheet）"""
+"""创建垂直布局的示例数据文件（每个案件一个Sheet）
+
+垂直布局特点：
+- 每个案件单独一个Sheet
+- 每Sheet两列：字段名 | 值
+- 适合字段较多的案件，编辑更紧凑
+- 无需横向滚动，字段名和值对照清晰
+
+与水平布局对比：
+- 水平布局：单Sheet，每行一个案件，适合字段较少
+- 垂直布局：多Sheet，每Sheet一个案件，适合字段较多
+"""
 
 import pandas as pd
 from datetime import datetime
@@ -132,7 +143,7 @@ cases = [
 ]
 
 # 创建Excel文件，每个案件一个Sheet
-output_path = "G:/XZCF/行政处罚生成工具/信息文件/数据.xlsx"
+output_path = "G:/XZCF/行政处罚生成工具/信息文件/数据_垂直布局.xlsx"
 
 with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
     for case in cases:

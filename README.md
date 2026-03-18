@@ -64,6 +64,12 @@ pip install docxtpl pandas openpyxl
 | 2024-001 | 张三 | 北京市 | 违法建设 | 罚款50000元 |
 | 2024-002 | 李四 | 上海市 | 违规施工 | 罚款20000元 |
 
+**生成示例数据：**
+```bash
+python create_sample_data_horizontal.py
+# 输出：信息文件/数据_水平布局.xlsx
+```
+
 #### 格式二：垂直布局（推荐✓）
 **每个案件一个 Sheet**，两列格式（字段名 | 值），编辑更紧凑：
 
@@ -90,6 +96,12 @@ pip install docxtpl pandas openpyxl
 - ✅ 每个案件独立 Sheet，切换方便
 - ✅ 字段名和值对照清晰，不易出错
 - ✅ 适合字段较多的复杂案件
+
+**生成示例数据：**
+```bash
+python create_sample_data_vertical.py
+# 输出：信息文件/数据_垂直布局.xlsx
+```
 
 ### 4. 运行程序
 

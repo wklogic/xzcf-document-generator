@@ -28,11 +28,15 @@
 2. 修改数据（支持两种格式）
 
    格式一：水平布局（单Sheet，每行一个案件）
-   - 打开"信息文件/数据.xlsx"
+   - 运行：python create_sample_data_horizontal.py
+   - 生成：信息文件/数据_水平布局.xlsx
    - 表头字段名与模板中的占位符对应
    - 每行数据生成一个文档
+   - 适合字段较少的简单案件
 
    格式二：垂直布局（每案一个Sheet，推荐✓）
+   - 运行：python create_sample_data_vertical.py
+   - 生成：信息文件/数据_垂直布局.xlsx
    - 每个案件单独一个Sheet，Sheet名建议用案号
    - 每Sheet两列：第一列字段名，第二列值
    - 更紧凑，无需横向滚动，适合字段多的案件
