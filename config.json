@@ -2,7 +2,7 @@
   "template_file": "模板文件/行政处罚.docx",
   "data_file": "信息文件/数据.xlsx",
   "output_dir": "输出文件",
-  "filename_template": "{案号}_{当事人名称}_行政处罚决定书.docx",
+  "filename_template": "{案号}_{当事人名称}_{生成时间}_行政处罚决定书.docx",
   "sheet_name": 0,
   "skip_rows": 0
 }

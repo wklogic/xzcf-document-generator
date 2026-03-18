@@ -196,7 +196,13 @@ class DocumentGenerator:
     def generate_filename(self, row_data):
         """根据配置生成文件名"""
         try:
-            filename = self.config['filename_template'].format(**row_data)
+            # 添加系统变量到行数据
+            context = dict(row_data)
+            context['生成日期'] = datetime.now().strftime("%Y年%m月%d日")
+            context['生成时间'] = datetime.now().strftime("%Y%m%d_%H%M%S")
+            context['年份'] = datetime.now().year
+
+            filename = self.config['filename_template'].format(**context)
             # 清理非法字符
             invalid_chars = '<>:"/\\|?*'
             for char in invalid_chars:
