@@ -2,9 +2,16 @@
 # -*- coding: utf-8 -*-
 """验证生成的文档"""
 
+from pathlib import Path
 from docx import Document
 
-doc = Document('G:/XZCF/行政处罚生成工具/输出文件/2024-001_张三_行政处罚决定书.docx')
+output_path = Path(__file__).parent / "输出文件"
+files = sorted(output_path.glob("*.docx"))
+if files:
+    doc = Document(str(files[0]))
+else:
+    print("输出文件目录下未找到 .docx 文件")
+    exit(1)
 
 print("生成的文档内容预览：")
 print("=" * 50)

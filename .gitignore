@@ -26,10 +26,9 @@ wheels/
 
 # 日志文件
 *.log
-生成日志.txt
 
 # 输出文件（生成的文档）
-输出文件/*.docx
+output/*.docx
 
 # IDE
 .vscode/

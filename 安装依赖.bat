@@ -8,12 +8,12 @@ echo.
 echo 正在安装必要的 Python 库...
 echo.
 
-pip install docxtpl pandas openpyxl
+pip install docxtpl pandas openpyxl python-docx
 
 echo.
 if errorlevel 1 (
     echo 安装失败，请检查网络连接或手动运行：
-    echo pip install docxtpl pandas openpyxl
+    echo pip install docxtpl pandas openpyxl python-docx python-docx
 ) else (
     echo ==========================================
     echo 安装成功！

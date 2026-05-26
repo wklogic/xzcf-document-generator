@@ -3,6 +3,7 @@
 """创建水平布局的示例数据文件（单Sheet，每行一个案件）"""
 
 import pandas as pd
+from pathlib import Path
 from datetime import datetime
 
 # 定义示例数据 - 与原VBA代码对应的关键字段
@@ -129,7 +130,7 @@ data = [
 df = pd.DataFrame(data)
 
 # 保存为Excel（单Sheet，水平布局）
-output_path = "G:/XZCF/行政处罚生成工具/信息文件/数据_水平布局.xlsx"
+output_path = str(Path(__file__).parent / "信息文件" / "数据_水平布局.xlsx")
 df.to_excel(output_path, index=False, engine='openpyxl')
 
 print(f"水平布局示例数据已创建: {output_path}")

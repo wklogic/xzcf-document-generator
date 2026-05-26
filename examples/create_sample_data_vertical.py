@@ -14,6 +14,7 @@
 """
 
 import pandas as pd
+from pathlib import Path
 from datetime import datetime
 
 # 定义示例数据 - 两个案件，每个案件一个Sheet
@@ -143,7 +144,7 @@ cases = [
 ]
 
 # 创建Excel文件，每个案件一个Sheet
-output_path = "G:/XZCF/行政处罚生成工具/信息文件/数据_垂直布局.xlsx"
+output_path = str(Path(__file__).parent / "信息文件" / "数据_垂直布局.xlsx")
 
 with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
     for case in cases:

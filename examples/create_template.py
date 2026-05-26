@@ -5,6 +5,7 @@
 from docx import Document
 from docx.shared import Pt, Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from pathlib import Path
 
 def create_template():
     # 创建文档
@@ -159,7 +160,7 @@ def create_template():
     p.add_run('生成日期：{{生成日期}}')
     
     # 保存
-    output_path = "G:/XZCF/行政处罚生成工具/模板文件/行政处罚.docx"
+    output_path = str(Path(__file__).parent / "模板文件" / "行政处罚.docx")
     doc.save(output_path)
     print(f"模板文件已创建: {output_path}")
     print("\n模板中包含的占位符：")

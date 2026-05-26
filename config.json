@@ -1,8 +1,16 @@
 {
-  "template_file": "模板文件/行政处罚.docx",
-  "data_file": "信息文件/数据.xlsx",
-  "output_dir": "输出文件",
-  "filename_template": "{案号}_{当事人名称}_{生成时间}_行政处罚决定书.docx",
+  "template_file": "templates/template.docx",
+  "data_file": "data/data.xlsx",
+  "output_dir": "output",
+  "filename_template": "{案号}_{当事人名称}.docx",
   "sheet_name": 0,
-  "skip_rows": 0
+  "skip_rows": 0,
+  "skip_sheets": [],
+  "layout": "auto",
+  "system_variables": {
+    "render_date": "%Y年%m月%d日",
+    "render_time": "%Y%m%d_%H%M%S",
+    "render_time_readable": "%Y-%m-%d %H:%M:%S",
+    "render_year": "%Y"
+  }
 }
