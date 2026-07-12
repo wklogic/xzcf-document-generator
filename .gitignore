@@ -23,6 +23,7 @@ wheels/
 # PyInstaller
 *.manifest
 *.spec
+render.exe
 
 # 日志文件
 *.log
@@ -45,3 +46,9 @@ Desktop.ini
 # 临时文件
 *.tmp
 *.temp
+
+# 虚拟环境
+venv_libs/
+
+# 发布目录
+发布/

@@ -1,16 +1,15 @@
 @echo off
-chcp 65001 >nul
+title Template Renderer
 echo ==========================================
-echo 通用模板渲染工具
+echo   Template Renderer v1.0
 echo ==========================================
 echo.
 
-REM 检查是否存在打包后的 exe
 if exist "render.exe" (
-    echo 正在启动程序...
+    echo Starting render.exe ...
     render.exe
 ) else (
-    echo 正在通过 Python 运行...
+    echo render.exe not found, trying Python ...
     python render.py
 )
 

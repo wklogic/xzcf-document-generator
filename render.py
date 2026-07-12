@@ -38,7 +38,11 @@ class TemplateRenderer:
 
     def __init__(self, config_path='config.json'):
         self.config = self.load_config(config_path)
-        self.base_dir = Path(__file__).parent
+        # PyInstaller 打包后 __file__ 指向临时目录，需用 sys.executable
+        if getattr(sys, 'frozen', False):
+            self.base_dir = Path(sys.executable).parent
+        else:
+            self.base_dir = Path(__file__).parent
         self.output_dir = self.base_dir / self.config.get('output_dir', 'output')
         self.ensure_directories()
 
@@ -304,6 +308,11 @@ def main():
     print()
 
     config_file = sys.argv[1] if len(sys.argv) > 1 else 'config.json'
+
+    # 确保相对路径的 config 文件相对于 exe 目录查找
+    if not os.path.isabs(config_file):
+        if getattr(sys, 'frozen', False):
+            config_file = str(Path(sys.executable).parent / config_file)
 
     renderer = TemplateRenderer(config_file)
     renderer.run()
